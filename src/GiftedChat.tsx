@@ -15,7 +15,6 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import moment from 'moment'
 import uuid from 'uuid'
-import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import * as utils from './utils'
 import Actions from './Actions'
@@ -560,19 +559,12 @@ class GiftedChat<TMessage extends IMessage = IMessage> extends React.Component<
     return value
   }
 
-  safeAreaIphoneX = (bottomOffset: number) => {
-    if (isIphoneX()) {
-      return bottomOffset === this._bottomOffset ? 33 : bottomOffset
-    }
-    return bottomOffset
-  }
-
   onKeyboardWillShow = (e: any) => {
     this.setIsTypingDisabled(true)
     this.setKeyboardHeight(
       e.endCoordinates ? e.endCoordinates.height : e.end.height,
     )
-    this.setBottomOffset(this.safeAreaIphoneX(this.props.bottomOffset!))
+    this.setBottomOffset(this.props.bottomOffset!)
     const newMessagesContainerHeight = this.getMessagesContainerHeightWithKeyboard()
     if (this.props.isAnimated === true) {
       Animated.timing(this.state.messagesContainerHeight!, {
